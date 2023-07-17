@@ -12,7 +12,7 @@ import java.util.Collection;
 
 @Data
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 @NoArgsConstructor
 public class User implements UserDetails {
 
@@ -37,7 +37,6 @@ public class User implements UserDetails {
 
     public User(String username) {
         this.username = username;
-
     }
 
     public User(String username, String password) {
