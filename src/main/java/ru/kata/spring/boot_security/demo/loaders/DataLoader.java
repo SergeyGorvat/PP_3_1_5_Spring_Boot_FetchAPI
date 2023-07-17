@@ -1,29 +1,33 @@
 package ru.kata.spring.boot_security.demo.loaders;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-import ru.kata.spring.boot_security.demo.model.Role;
-import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.models.Role;
+import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
 import java.util.Collections;
 
 @Component
-@RequiredArgsConstructor
 public class DataLoader implements ApplicationRunner {
-
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
+    @Autowired
+    public DataLoader(UserRepository userRepository, RoleRepository roleRepository) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+    }
     @Override
     public void run(ApplicationArguments args) {
-
-        User user = new User("user", new BCryptPasswordEncoder().encode("user"));
-        User admin = new User("admin", new BCryptPasswordEncoder().encode("admin"));
+        User user = new User("user", 20,
+                "user@mail.ru", new BCryptPasswordEncoder().encode("user"));
+        User admin = new User("admin", 20,
+                "admin@mail.ru", new BCryptPasswordEncoder().encode("admin"));
 
         Role role_admin = new Role("ROLE_ADMIN");
         Role role_user = new Role("ROLE_USER");
