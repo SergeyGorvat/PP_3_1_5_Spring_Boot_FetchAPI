@@ -19,6 +19,11 @@ public class RegistrationController {
         this.userService = userService;
     }
 
+    @GetMapping("/")
+    public String redirectToLogin(){
+        return "redirect:/login";
+    }
+
     @GetMapping("/registration")
     public String registrationPage(@ModelAttribute("user") User user) {
         return "registration";

@@ -11,6 +11,8 @@ import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 public class DataLoader implements ApplicationRunner {
@@ -32,11 +34,14 @@ public class DataLoader implements ApplicationRunner {
         Role role_admin = new Role("ROLE_ADMIN");
         Role role_user = new Role("ROLE_USER");
 
-        roleRepository.save(role_admin);
-        roleRepository.save(role_user);
+        Set<Role> roles = new HashSet<>();
+        roles.add(role_admin);
+        roles.add(role_user);
+
+        roleRepository.saveAll(roles);
 
         user.setRoles(Collections.singleton(role_user));
-        admin.setRoles(Collections.singleton(role_admin));
+        admin.setRoles(roles);
 
         userRepository.save(user);
         userRepository.save(admin);

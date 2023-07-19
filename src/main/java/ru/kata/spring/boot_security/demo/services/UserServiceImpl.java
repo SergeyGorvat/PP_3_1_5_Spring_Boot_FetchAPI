@@ -1,17 +1,15 @@
 package ru.kata.spring.boot_security.demo.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
-
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +20,6 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Autowired
     public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
@@ -37,6 +34,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
+    public List<Role> getAllRoles() { return roleRepository.findAll(); }
+
+    @Override
+    @Transactional(readOnly = true)
     public User getUserById(Integer id) {
         Optional<User> user = userRepository.findById(id);
         return user.orElse(new User());
@@ -47,8 +48,6 @@ public class UserServiceImpl implements UserService {
     public boolean saveUser(User newUser) {
 
         if (userRepository.findByUsername(newUser.getUsername()).isPresent()) return false;
-
-        newUser.setRoles(Collections.singleton(roleRepository.findRoleByRoleTitle("ROLE_USER").get()));
         newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
         userRepository.save(newUser);
         return true;
@@ -57,7 +56,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void updateUser(Integer id, User updatedUser) {
-        updatedUser.setRoles(userRepository.findById(updatedUser.getId()).get().getRoles());
+        updatedUser.setPassword(bCryptPasswordEncoder.encode(updatedUser.getPassword()));
         userRepository.save(updatedUser);
     }
 
