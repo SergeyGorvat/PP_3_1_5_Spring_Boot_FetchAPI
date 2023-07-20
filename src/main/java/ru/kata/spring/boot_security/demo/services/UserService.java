@@ -12,6 +12,6 @@ public interface UserService extends UserDetailsService {
      List<Role> getAllRoles();
     User getUserById(Integer id);
     boolean saveUser(User user);
-    void updateUser(Integer id, User updatedUser);
+    void updateUser(User updatedUser);
     boolean deleteUser(Integer id);
 }

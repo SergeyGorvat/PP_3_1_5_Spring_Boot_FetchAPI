@@ -34,7 +34,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Role> getAllRoles() { return roleRepository.findAll(); }
+    public List<Role> getAllRoles()
+    { return roleRepository.findAll(); }
 
     @Override
     @Transactional(readOnly = true)
@@ -55,7 +56,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUser(Integer id, User updatedUser) {
+    public void updateUser(User updatedUser) {
         updatedUser.setPassword(bCryptPasswordEncoder.encode(updatedUser.getPassword()));
         userRepository.save(updatedUser);
     }
