@@ -27,18 +27,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<Role> getAllRoles()
     { return roleRepository.findAll(); }
 
     @Override
-    @Transactional(readOnly = true)
     public User getUserById(Integer id) {
         Optional<User> user = userRepository.findById(id);
         return user.orElse(new User());
